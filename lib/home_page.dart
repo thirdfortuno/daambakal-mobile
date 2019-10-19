@@ -1,4 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class UserResponse{
+  final int tickets;
+  final double wallet;
+  final String fullName;
+  final String accountNumber;
+
+  UserResponse({this.tickets,this.wallet,this.fullName,this.accountNumber});
+
+  factory UserResponse.fromJson(Map<String, dynamic> json){
+    return UserResponse(
+      tickets: json['tickets'],
+      wallet: json['wallet'],
+      fullName: json['full_name'].toString(),
+      accountNumber: json['account_number']
+    );
+  }
+}
+
+class User{
+  int tickets = 0;
+  double wallet = 0;
+  String name = "";
+  String accountNumber = "";
+  String token = "";
+}
 
 class HomePage extends StatefulWidget{
 
@@ -9,10 +37,20 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage>{
 
   //Account stuff
-  String name = "Cardo Dalisay";
-  String accountNo = "DBPH-00001";
-  int tickets = 0;
-  double load = 53.00;
+  /*
+  String _name = "Cardo Dalisay";
+  String _accountNo = "DBPH-00001";
+  int _tickets = 0;
+  double _load = 53.00;*/
+
+  String _token = "";
+
+  User user = new User();
+
+  void getUserInfo() async{
+    var response = await http.get('https://daambakal.herokuapp.com/v1/user/info/$_token');
+    print(response);
+  }
 
   @override
   void initState() {
@@ -22,6 +60,8 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context){
+    _token = ModalRoute.of(context).settings.arguments;
+    getUserInfo();
     return Material(
       child: Stack(
         children: <Widget>[
@@ -52,7 +92,7 @@ class _HomePageState extends State<HomePage>{
                           ),
                         ),
                         Text(
-                          " $name",
+                          " $user.name",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -68,7 +108,7 @@ class _HomePageState extends State<HomePage>{
                         Column(
                           children: <Widget>[
                             Text(
-                              accountNo,
+                              user.accountNumber,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -226,7 +266,7 @@ class _HomePageState extends State<HomePage>{
                               fontSize: 18
                             ),
                           ),
-                          Text("$tickets Tickets")
+                          Text("${user.tickets} Tickets")
                         ],
                       ),
                     ),
@@ -248,7 +288,7 @@ class _HomePageState extends State<HomePage>{
                             ),
                           ),
                           Text(
-                            "PHP ${load.toStringAsFixed(2)} Balance Load"
+                            "PHP ${user.wallet.toStringAsFixed(2)} Balance Load"
                           )
                         ],
                       ),

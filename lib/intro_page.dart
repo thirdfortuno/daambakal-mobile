@@ -98,7 +98,7 @@ class IntroSection extends StatelessWidget{
                       child: Text("Register"),
                       onPressed: (){
                         Navigator.pop(context);
-                        Navigator.pushNamed(context, "/login");
+                        Navigator.pushNamed(context, "/register");
                       },
                     ),
                     Spacer(),
