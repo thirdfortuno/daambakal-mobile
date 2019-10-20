@@ -48,8 +48,15 @@ class _HomePageState extends State<HomePage>{
   User user = new User();
 
   void getUserInfo() async{
-    var response = await http.get('https://daambakal.herokuapp.com/v1/user/info/$_token');
-    print(response);
+    var response = await http.get('https://daambakal.herokuapp.com/v1/user/info?token=$_token');
+    UserResponse resp = UserResponse.fromJson(json.decode(response.body));
+    setState(() {
+      user.tickets = resp.tickets;
+      user.wallet = resp.wallet;
+      user.name = resp.fullName;
+      user.accountNumber = resp.accountNumber;
+      user.token = "";
+    });
   }
 
   @override
@@ -60,7 +67,7 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context){
-    _token = ModalRoute.of(context).settings.arguments;
+    if(_token == "")_token = ModalRoute.of(context).settings.arguments;
     getUserInfo();
     return Material(
       child: Stack(
@@ -92,7 +99,7 @@ class _HomePageState extends State<HomePage>{
                           ),
                         ),
                         Text(
-                          " $user.name",
+                          " ${user.name}",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -143,10 +150,16 @@ class _HomePageState extends State<HomePage>{
                           child: Column(
                             children: <Widget>[
                               InkWell(
-                                child: Image.asset(
-                                  'assets/buy_ticket.png',
-                                  scale: .5,
+                                child: Hero(
+                                  tag: 'buy_ticket',
+                                  child: Image.asset(
+                                    'assets/buy_ticket.png',
+                                    scale: .5,
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.pushNamed(context, '/buyTicket');
+                                },
                               ),
                               SizedBox(height: 10),
                               Text(
@@ -222,6 +235,9 @@ class _HomePageState extends State<HomePage>{
                                   'assets/promos_rewards.png',
                                   scale: .5,
                                 ),
+                                onTap: (){
+                                  getUserInfo();
+                                }
                               ),
                               SizedBox(height: 10),
                               Text(

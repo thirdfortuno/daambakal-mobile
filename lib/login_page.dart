@@ -56,8 +56,6 @@ class _LoginState extends State<Login> {
       "number": int.parse(_number),
       "password": _password,
     };
-    print(body);
-    
     http.post(url,
       headers: {"Content-type": "application/json"},
       body: json.encode(body),
@@ -75,10 +73,6 @@ class _LoginState extends State<Login> {
           _message = "Login Failed. Please check credentials";
         });
       }
-      print(resp.success);
-      print(resp.message);
-      print(resp.token);
-      //if(response.body.)
     });
     return null;
   }

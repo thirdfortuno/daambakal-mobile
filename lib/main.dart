@@ -1,3 +1,4 @@
+import 'package:daambakal/buy_ticket_page.dart';
 import 'package:daambakal/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:daambakal/register_page.dart';
@@ -15,12 +16,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: "/intro",
+      initialRoute: "/buyTicket",
       routes: {
-        "/": (context) => HomePage(),
+        "/": (context) => IntroPage(),
+        "/home": (context) => HomePage(),
         "/login": (context) => Login(),
         "/intro": (context) => IntroPage(),
-        "/register": (context) => Register()
+        "/register": (context) => Register(),
+        "/buyTicket": (context) => BuyTicketPage(),
       },
     );
   }
