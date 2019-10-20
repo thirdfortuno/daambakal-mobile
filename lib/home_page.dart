@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage>{
 
   void getUserInfo() async{
     var response = await http.get('https://daambakal.herokuapp.com/v1/user/info?token=$_token');
+    print(response.body);
     UserResponse resp = UserResponse.fromJson(json.decode(response.body));
     setState(() {
       user.tickets = resp.tickets;
@@ -67,8 +68,10 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context){
-    if(_token == "")_token = ModalRoute.of(context).settings.arguments;
-    getUserInfo();
+    if(_token == ""){
+      _token = ModalRoute.of(context).settings.arguments;
+      getUserInfo();
+    }
     return Material(
       child: Stack(
         children: <Widget>[
@@ -158,7 +161,7 @@ class _HomePageState extends State<HomePage>{
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.pushNamed(context, '/buyTicket');
+                                  Navigator.pushNamed(context, '/buyTicket', arguments: _token);
                                 },
                               ),
                               SizedBox(height: 10),

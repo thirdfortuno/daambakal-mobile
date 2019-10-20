@@ -77,11 +77,11 @@ class _RegisterState extends State<Register> {
         Navigator.pushNamed(
           context,
           '/home',
-          arguments: resp.token
+          arguments: resp.token,  
         );
       }else{
         setState(() {
-         _message = resp.message; 
+         _message = resp.message ?? 'Registration failed'; 
         });
       }
     });

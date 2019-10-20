@@ -56,11 +56,17 @@ class _LoginState extends State<Login> {
       "number": int.parse(_number),
       "password": _password,
     };
+    setState(() {
+      _message = "Sending $_number";
+    });
     http.post(url,
       headers: {"Content-type": "application/json"},
       body: json.encode(body),
     ).then((http.Response response) {
       resp = LoginResponse.fromJson(json.decode(response.body));
+      setState(() {
+        _message = response.body;
+      });
       if(resp.success){
         Navigator.pop(context);
         Navigator.pushNamed(

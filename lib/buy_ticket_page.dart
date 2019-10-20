@@ -57,19 +57,20 @@ class Time{
     return Time(
       departure: json['departure'],
       arrival: json['arrival'],
-      trainId: json['trainId'],
+      trainId: json['train_id'],
     );
   }
 }
 
 class BuyTicketPage extends StatefulWidget{
-  
 
   @override
   _BuyTicketPageState createState() => _BuyTicketPageState();
 }
 
 class _BuyTicketPageState extends State<BuyTicketPage>{
+
+  String _token = "";
 
   int _stationFrom = 0;
   int _stationTo = 0;
@@ -83,6 +84,38 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
   double _price = 0;
   String _method = "Choose Method";
 
+  Future<void> _showTicket(context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('PNR Commuter Ticket'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text("Route: ${stations[_stationFrom].name} to ${stations[_stationTo].name}"),
+              Text("Departure: ${times[_departure].departure}"),
+              Text("Arrival: ${times[_departure].arrival}"),
+              Text("Mode of Payment: $_method"),
+              
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Home'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   List<Station> parseStations(String response){
     final parsed = json.decode(response).cast<Map<String, dynamic>>();
   
@@ -93,6 +126,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
     var response = await http.get("https://daambakal.herokuapp.com/v1/stations/list");
     StationResponse resp = StationResponse.fromJson(json.decode(response.body));
     stations = resp.stations.map((stat) => Station.fromJson(json.decode(json.encode(stat)))).toList();
+    stations.insert(0, Station(id:0,name:"null"));
     setState(() {
     });
   }
@@ -103,7 +137,26 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
       TimeResponse resp = TimeResponse.fromJson(json.decode(response.body));
       _price = resp.price;
       times = resp.times.map((time) => Time.fromJson(json.decode(json.encode(time)))).toList();
+      times.insert(0, Time(arrival: "null",departure: "null", trainId: -1));
     }
+  }
+
+  void buyTicket() async{
+    String url = 'https://daambakal.herokuapp.com/v1/tickets/buy';
+    var body = {
+      "token": _token,
+      "from": _stationFrom,
+      "to": _stationTo,
+      "train_id": times[_departure].trainId,
+      "quantity": _quantity
+    };
+    http.post(url,
+      headers: {"Content-type": "application/json"},
+      body: json.encode(body),
+    ).then((http.Response response) {
+      print(response.body);
+      _showTicket(context);
+    });
   }
 
   void initState(){
@@ -128,7 +181,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
   } 
 
   List<DropdownMenuItem> _stationList(){
-    return List.generate(24, (i)=>i).map((int val){
+    return List.generate(stations.length, (i)=>i).map((int val){
       return DropdownMenuItem<int>(
         value: val,
         child: (val > 0 && stations.length > 0) ? Text(stations[val].name) : Text("Select Station", style: TextStyle(color: Colors.black45)),
@@ -138,6 +191,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
 
   @override
   Widget build(BuildContext context){
+    if(_token == "")_token = ModalRoute.of(context).settings.arguments;
     return Material(
       child: Stack(
         children: <Widget>[
@@ -181,7 +235,10 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
                     InkWell(
                       child: SizedBox(height: 80),
                       onTap: (){
-                        getTime();
+                        getStations();
+                        /*for(var i = 0; i < times.length; i++){
+                          print(times[i].trainId);
+                        }*/
                       },
                     ),
                     Tile(
@@ -323,7 +380,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
                               child: Text("Purchase"),
                               color: Colors.blue,
                               onPressed: (_stationTo * _stationFrom == 0 || _stationFrom == _stationTo || _method == "Choose Method") ? null : (){
-
+                                buyTicket();
                               },
                             ),
                           ],
