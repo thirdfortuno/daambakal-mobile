@@ -80,7 +80,7 @@ class IntroSection extends StatelessWidget{
             Row(
               children: orderDots(),
             ),
-            SizedBox(height: 70),
+            SizedBox(height: 20),
             order == orderMax ? 
               Container(
                 child: Row(

@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage>{
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                height: 300,
+                height: MediaQuery.of(context).size.height/3,
                 child: Column(
                   children: <Widget>[
                     Spacer(),
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage>{
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height - 300,
+                height: 2*MediaQuery.of(context).size.height/3 ,
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage>{
                       children: <Widget>[
                         Spacer(),
                         Container(
-                          height: 200,
+                          height: MediaQuery.of(context).size.height/4.5,
                           child: Column(
                             children: <Widget>[
                               InkWell(
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage>{
                                   tag: 'buy_ticket',
                                   child: Image.asset(
                                     'assets/buy_ticket.png',
-                                    scale: .5,
+                                    scale: 200/MediaQuery.of(context).size.width, 
                                   ),
                                 ),
                                 onTap: (){
@@ -178,13 +178,13 @@ class _HomePageState extends State<HomePage>{
                         ),
                         Spacer(),
                         Container(
-                          height: 200,
+                          height: MediaQuery.of(context).size.height/4.5,
                           child: Column(
                             children: <Widget>[
                               InkWell(
                                 child: Image.asset(
                                   'assets/schedule.png',
-                                  scale: .5,
+                                  scale: 200/MediaQuery.of(context).size.width, 
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -206,13 +206,13 @@ class _HomePageState extends State<HomePage>{
                       children: <Widget>[
                         Spacer(),
                         Container(
-                          height: 180,
+                          height: MediaQuery.of(context).size.height/4.5,
                           child: Column(
                             children: <Widget>[
                               InkWell(
                                 child: Image.asset(
                                   'assets/news_updates.png',
-                                  scale: .5,  
+                                  scale: 200/MediaQuery.of(context).size.width,  
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -230,13 +230,13 @@ class _HomePageState extends State<HomePage>{
                         ),
                         Spacer(),
                         Container(
-                          height: 180,
+                          height: MediaQuery.of(context).size.height/4.5,
                           child: Column(
                             children: <Widget>[
                               InkWell(
                                 child: Image.asset(
                                   'assets/promos_rewards.png',
-                                  scale: .5,
+                                  scale: 200/MediaQuery.of(context).size.width, 
                                 ),
                                 onTap: (){
                                   getUserInfo();
@@ -264,7 +264,7 @@ class _HomePageState extends State<HomePage>{
             ],
           ),
           Positioned(
-            top: 250,
+            top: MediaQuery.of(context).size.height/3 - 50,
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16),
               child: Row(

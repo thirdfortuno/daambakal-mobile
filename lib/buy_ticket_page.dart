@@ -207,10 +207,10 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
           Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: MediaQuery.of(context).size.height/3,
               ),
               Container(
-                height: MediaQuery.of(context).size.height - 300,
+                height: 2*MediaQuery.of(context).size.height/3,
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 color: Colors.white,
                 child: ListView(
@@ -221,7 +221,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
             ],
           ),
           Positioned(
-            top: 150,
+            top: MediaQuery.of(context).size.height/8,
             child: Container(
               width: MediaQuery.of(context).size.width - 40,
               height: 650,
@@ -386,6 +386,9 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
                           ],
                         )
                       ),
+                    ),
+                    SizedBox(
+                      height: 500,
                     )
                   ],
                 ),
@@ -393,7 +396,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
             ),
           ),
           Positioned(
-            top: 115,
+            top: MediaQuery.of(context).size.height/8 - 40,
             child: Container(
               width: MediaQuery.of(context).size.width,
               child: Row(
@@ -403,7 +406,7 @@ class _BuyTicketPageState extends State<BuyTicketPage>{
                     tag: "buy_ticket",
                     child: Image.asset(
                       'assets/buy_ticket.png',
-                      scale: .5,
+                      scale: 200/MediaQuery.of(context).size.width, 
                     ),
                   ),
                   Spacer(),

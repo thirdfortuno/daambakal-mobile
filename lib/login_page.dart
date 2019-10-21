@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
           Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: MediaQuery.of(context).size.height/3,
                 child: Center(
                   child: Hero(
                     tag: 'logo',
@@ -130,7 +130,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height - 300,
+                height: MediaQuery.of(context).size.height/3 * 2,
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 color: Colors.white,
                 child: ListView(
@@ -178,7 +178,7 @@ class _LoginState extends State<Login> {
             ],
           ),
           Positioned(
-            top: 275,
+            top: MediaQuery.of(context).size.height/3 - 25,
             child: Container(
               width: MediaQuery.of(context).size.width,
               child: Row(
