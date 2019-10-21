@@ -60,6 +60,11 @@ class _HomePageState extends State<HomePage>{
     });
   }
 
+  void goBuy() async{
+    await Navigator.pushNamed(context, '/buyTicket', arguments: _token);
+    getUserInfo();
+  }
+
   @override
   void initState() {
 
@@ -161,7 +166,7 @@ class _HomePageState extends State<HomePage>{
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.pushNamed(context, '/buyTicket', arguments: _token);
+                                  goBuy();
                                 },
                               ),
                               SizedBox(height: 10),
